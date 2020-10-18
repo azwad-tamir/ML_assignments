@@ -114,33 +114,97 @@ y_all = train_df[['Survived']]
 # Applying five-fold cross validation split:
 X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, random_state=1, test_size=0.2)
 
-# Creating SVM classifier:
-clf = svm.SVC(kernel='linear') # Linear Kernel
+# Creating SVM classifiers:
+svm_lin = svm.SVC(kernel='linear')
+svm_quad = svm.SVC(kernel='poly', degree=2)
+svm_rbf = svm.SVC(kernel='rbf')
+
 #Train the model using the training sets
-clf.fit(X_train, y_train)
+svm_lin.fit(X_train, y_train)
+svm_quad.fit(X_train, y_train)
+svm_rbf.fit(X_train, y_train)
+
 #Predict the response for test dataset
-y_pred = clf.predict(X_test)
+y_pred_lin = svm_lin.predict(X_test)
+y_pred_quad = svm_quad.predict(X_test)
+y_pred_rbf = svm_rbf.predict(X_test)
+
+# Calculating accuracy parameters for the Linear Kernel SVM classifier:
 sum =0
-y_pred = y_pred.reshape(179, 1)
+y_pred_lin = y_pred_lin.reshape(179, 1)
 y_test1 = y_test.to_numpy()
 fp = 0
 fn = 0
 tp = 0
 tn = 0
 for i in range(0,179):
-    sum += y_pred[i,0] == y_test1[i,0]
-    if (y_pred[i,0] == 1) and (y_test1[i,0] == 1):
+    sum += y_pred_lin[i,0] == y_test1[i,0]
+    if (y_pred_lin[i,0] == 1) and (y_test1[i,0] == 1):
         tp += 1
-    elif (y_pred[i,0] == 1) and (y_test1[i,0] == 0):
+    elif (y_pred_lin[i,0] == 1) and (y_test1[i,0] == 0):
         fp += 1
-    elif (y_pred[i,0] == 0) and (y_test1[i,0] == 1):
+    elif (y_pred_lin[i,0] == 0) and (y_test1[i,0] == 1):
         fn += 1
-    elif (y_pred[i,0] == 0) and (y_test1[i,0] == 0):
+    elif (y_pred_lin[i,0] == 0) and (y_test1[i,0] == 0):
         tn += 1
     else:
         print("Fetal Error: Check accuracy and recall")
 
-print("Naive_Bayes Classifier:\nAccuracy: ", sum/179*100, "%")
+print("SVM linear Kernel Classifier:\nAccuracy: ", sum/179*100, "%")
+Precision = tp / (tp+fp)
+Recall = tp / (tp+fn)
+f1_score = 2*(Recall * Precision) / (Recall + Precision)
+print("Precision: ", Precision, "\nRecall: ", Recall, "\nf1_score: ", f1_score)
+
+# Calculating accuracy parameters for the quadratic Kernel SVM classifier:
+sum =0
+y_pred_quad = y_pred_quad.reshape(179, 1)
+y_test1 = y_test.to_numpy()
+fp = 0
+fn = 0
+tp = 0
+tn = 0
+for i in range(0,179):
+    sum += y_pred_quad[i,0] == y_test1[i,0]
+    if (y_pred_quad[i,0] == 1) and (y_test1[i,0] == 1):
+        tp += 1
+    elif (y_pred_quad[i,0] == 1) and (y_test1[i,0] == 0):
+        fp += 1
+    elif (y_pred_quad[i,0] == 0) and (y_test1[i,0] == 1):
+        fn += 1
+    elif (y_pred_quad[i,0] == 0) and (y_test1[i,0] == 0):
+        tn += 1
+    else:
+        print("Fetal Error: Check accuracy and recall")
+
+print("SVM quadratic Kernel Classifier:\nAccuracy: ", sum/179*100, "%")
+Precision = tp / (tp+fp)
+Recall = tp / (tp+fn)
+f1_score = 2*(Recall * Precision) / (Recall + Precision)
+print("Precision: ", Precision, "\nRecall: ", Recall, "\nf1_score: ", f1_score)
+
+# Calculating accuracy parameters for the quadratic Kernel SVM classifier:
+sum =0
+y_pred_rbf = y_pred_rbf.reshape(179, 1)
+y_test1 = y_test.to_numpy()
+fp = 0
+fn = 0
+tp = 0
+tn = 0
+for i in range(0,179):
+    sum += y_pred_rbf[i,0] == y_test1[i,0]
+    if (y_pred_rbf[i,0] == 1) and (y_test1[i,0] == 1):
+        tp += 1
+    elif (y_pred_rbf[i,0] == 1) and (y_test1[i,0] == 0):
+        fp += 1
+    elif (y_pred_rbf[i,0] == 0) and (y_test1[i,0] == 1):
+        fn += 1
+    elif (y_pred_rbf[i,0] == 0) and (y_test1[i,0] == 0):
+        tn += 1
+    else:
+        print("Fetal Error: Check accuracy and recall")
+
+print("SVM rbf Kernel Classifier:\nAccuracy: ", sum/179*100, "%")
 Precision = tp / (tp+fp)
 Recall = tp / (tp+fn)
 f1_score = 2*(Recall * Precision) / (Recall + Precision)
