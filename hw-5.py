@@ -130,8 +130,8 @@ for iteration in range(0, total_iteration):
     print("Pass:", iteration, "\n", new_centroids, "\n\n")
 
     # Breaking loop if center position does not change:
-    # if np.sum(np.abs(centroids-new_centroids)) == 0 :
-    #     break
+    if np.sum(np.abs(centroids-new_centroids)) == 0 :
+        break
 
     # # Breaking the loop if SSE increases:
     # vote_cluster = np.zeros([3, 3])
